@@ -1,0 +1,9 @@
+[package]
+name = "protocat"
+version = "0.1.0"
+authors = ["John Chadwick <john@jchw.io>"]
+edition = "2018"
+
+[dependencies]
+nom = "6.1.2"
+nom_locate = "3.0.0"
