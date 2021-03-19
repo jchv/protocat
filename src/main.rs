@@ -119,14 +119,19 @@ where
             match tag {
                 ProtoTag{wire_type: WireType::VarInt, tag_number} =>
                     map(base128_vlq, |value| ProtoField{tag_number, value: WireValue::VarInt(value)})(input),
+
                 ProtoTag{wire_type: WireType::Int64, tag_number} =>
                     map(le_u64, |value| ProtoField{tag_number, value: WireValue::Int64(value)})(input),
+
                 ProtoTag{wire_type: WireType::LengthPrefixed, tag_number} =>
                     map(length_take(base128_vlq), |value| ProtoField{tag_number, value: WireValue::LengthPrefixed(value)})(input),
+
                 ProtoTag{wire_type: WireType::StartGroup, tag_number} =>
                     Ok((input, ProtoField{tag_number, value: WireValue::StartGroup})),
+
                 ProtoTag{wire_type: WireType::EndGroup, tag_number} =>
                     Ok((input, ProtoField{tag_number, value: WireValue::EndGroup})),
+
                 ProtoTag{wire_type: WireType::Int32, tag_number} =>
                     map(le_u32, |value| ProtoField{tag_number, value: WireValue::Int32(value)})(input)
             }
